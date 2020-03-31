@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>test | Michael Cone</title>
+    <link>http://localhost:21313/categories/test/</link>
+      <atom:link href="http://localhost:21313/categories/test/index.xml" rel="self" type="application/rss+xml" />
+    <description>test</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 30 Mar 2020 12:43:54 +0000</lastBuildDate>
+    <image>
+      <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
+      <title>test</title>
+      <link>http://localhost:21313/categories/test/</link>
+    </image>
+    
+    <item>
+      <title>My Test Post 2</title>
+      <link>http://localhost:21313/post/home_projects/post2/</link>
+      <pubDate>Mon, 30 Mar 2020 12:43:54 +0000</pubDate>
+      <guid>http://localhost:21313/post/home_projects/post2/</guid>
+      <description>&lt;p&gt;This is the body of my test post.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;learning&lt;/li&gt;
+&lt;li&gt;developing&lt;/li&gt;
+&lt;li&gt;testing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;img/comic.jpg&#34; alt=&#34;Comic Strip Image&#34;&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash
+
+echo $PWD
+
+docker run test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finished!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

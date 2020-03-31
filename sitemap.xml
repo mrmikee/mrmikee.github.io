@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://localhost:21313/categories/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/post/home_projects/post1/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/post/home_projects/post2/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/post/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/tags/python/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/tags/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/tags/test/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/categories/test/</loc>
+    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/authors/admin/</loc>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/authors/</loc>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/publication_types/</loc>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/publication/</loc>
+  </url>
+  
+  <url>
+    <loc>http://localhost:21313/talk/</loc>
+  </url>
+  
+</urlset>
