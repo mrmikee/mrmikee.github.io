@@ -23,7 +23,6 @@
 &lt;li&gt;developing&lt;/li&gt;
 &lt;li&gt;testing&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;img/comic.jpg&#34; alt=&#34;Comic Strip Image&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash
 
 echo $PWD
