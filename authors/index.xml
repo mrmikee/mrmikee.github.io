@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authors | Michael Cone</title>
-    <link>http://localhost:21313/authors/</link>
-      <atom:link href="http://localhost:21313/authors/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://www.mikecone.us/authors/</link>
+      <atom:link href="https://www.mikecone.us/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
     <image>
       <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
       <title>Authors</title>
-      <link>http://localhost:21313/authors/</link>
+      <link>https://www.mikecone.us/authors/</link>
     </image>
     
   </channel>
