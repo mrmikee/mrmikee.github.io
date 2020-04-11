@@ -3,52 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://www.mikecone.us/categories/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/post/home_projects/post1/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/post/home_projects/post2/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/post/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/tags/python/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/tags/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/tags/test/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/categories/test/</loc>
-    <lastmod>2020-03-30T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.mikecone.us/tags/3d-print/</loc>
+    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/categories/</loc>
     <lastmod>2020-01-01T12:43:54+00:00</lastmod>
   </url>
   
@@ -69,6 +29,21 @@
   
   <url>
     <loc>https://www.mikecone.us/categories/iot/</loc>
+    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/</loc>
+    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/post/</loc>
+    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/tags/</loc>
     <lastmod>2020-01-01T12:43:54+00:00</lastmod>
   </url>
   
