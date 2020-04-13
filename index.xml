@@ -200,5 +200,13 @@ text_sensor:
 </description>
     </item>
     
+    <item>
+      <title>Projects</title>
+      <link>https://www.mikecone.us/project/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://www.mikecone.us/project/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
