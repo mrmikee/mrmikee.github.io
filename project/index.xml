@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects | Michael Cone</title>
+    <link>https://www.mikecone.us/project/</link>
+      <atom:link href="https://www.mikecone.us/project/index.xml" rel="self" type="application/rss+xml" />
+    <description>Projects</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
+      <title>Projects</title>
+      <link>https://www.mikecone.us/project/</link>
+    </image>
+    
+    <item>
+      <title>Remote Base</title>
+      <link>https://www.mikecone.us/project/remote-base/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>https://www.mikecone.us/project/remote-base/</guid>
+      <description>&lt;p&gt;For a while now my father has been after me to help him build a system that will allow him to remotely operate his ham radio shack.  I have used this project as my motivation to expand my comfort zone and to learn more about some of the technologies I have taken for granted for years.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;VPN&lt;/li&gt;
+&lt;li&gt;TCP/IP networking&lt;/li&gt;
+&lt;li&gt;serial communications&lt;/li&gt;
+&lt;li&gt;audio interfaces&lt;/li&gt;
+&lt;li&gt;and more&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As I post articles on my site I will associate them to this project as appropriate for others to use as a reference and to help keep the bigger picture in focus.&lt;/p&gt;
+&lt;p&gt;More to come&amp;hellip;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
