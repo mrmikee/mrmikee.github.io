@@ -14,6 +14,106 @@
     
     <item>
       <title>ESP8266 Temp Multi-Sensor</title>
+      <link>https://www.mikecone.us/post/home_projects/esp_aquarium_temp_sensor/</link>
+      <pubDate>Wed, 01 Jan 2020 12:43:54 +0000</pubDate>
+      <guid>https://www.mikecone.us/post/home_projects/esp_aquarium_temp_sensor/</guid>
+      <description>&lt;p&gt;I built a second WiFi sensor, this time for my aquarium to monitor the tank water temperature.&lt;/p&gt;
+&lt;p&gt;This like my 
+&lt;a href=&#34;https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/&#34;&gt;Attic Multi-Sensor&lt;/a&gt; uses the home automation software 
+&lt;a href=&#34;https://www.home-assistant.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Home Assistant&lt;/a&gt; with the 
+&lt;a href=&#34;https://esphome.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;EspHome&lt;/a&gt; plugin.&lt;/p&gt;
+&lt;p&gt;Instead of reinventing the wheel, I&amp;rsquo;m just going to refer you to the great 
+&lt;a href=&#34;https://esphome.io/components/sensor/dallas.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Dallas Temperature documentation&lt;/a&gt; at the ESPHome website for this sensor for you to see how I went about building mine.&lt;/p&gt;
+&lt;p&gt;Here is a screenshot of of my water temperature sensor&amp;rsquo;s graph in Home Assistant:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/ha_temp_graph.png&#34; alt=&#34;HomeAssistant temp Display&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;hardware&#34;&gt;Hardware&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.amazon.com/gp/product/B076F53B6S&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wemos D1 Mini clone&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.amazon.com/gp/product/B00Q9YBIJI&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DS18N20 temp sensor&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;img/ds18b20.jpg&#34; alt=&#34;temp probe&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/wemos.png&#34; alt=&#34;D1-mini pinouts&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;case&#34;&gt;Case&lt;/h2&gt;
+&lt;p&gt;Here are my aquarium sensor 
+&lt;a href=&#34;https://www.thingiverse.com/thing:4281350&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;case 3D print files&lt;/a&gt; and some images below of how the one I built looks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/case_front.jpg&#34; alt=&#34;case front&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/case_back.jpg&#34; alt=&#34;case back&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/case_closed.jpg&#34; alt=&#34;case closed&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/case_installed.jpg&#34; alt=&#34;sensor installed&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/case_installed_2.jpg&#34; alt=&#34;sensor installed two&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;software&#34;&gt;Software&lt;/h2&gt;
+&lt;p&gt;Here is my &amp;ldquo;Home Assistant : ESP-Home&amp;rdquo; yaml config file for my aquarium temp sensor.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# D1-Mini CLONE w/attached DS18N20 waterproof Temp probe
+#
+substitutions:
+  devicename: aquarium_temp_01
+  upper_devicename: Aquarium 20gal
+
+esphome:
+  name: ${devicename}
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: &amp;quot;${devicename}&amp;quot;
+    password: !secret ap_fallback_pwd
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Enable Over The Air updates
+ota:
+  safe_mode: True
+
+# Example configuration entry
+dallas:
+- pin: GPIO4
+  update_interval: 15s
+
+sensor:
+  - platform: dallas
+    address: 0xCE041662D2CFFF28
+    name: ${devicename}_temp
+    filters:
+      - lambda: return x * (9.0/5.0) + 32.0;
+    unit_of_measurement: &amp;quot;°F&amp;quot;
+
+  - platform: wifi_signal
+    name: ${devicename}_wifi_signal
+    update_interval: 30s
+
+  - platform: uptime
+    name: ${devicename}_uptime
+
+binary_sensor:
+  - platform: status
+    name: ${upper_devicename} Status
+    id: ${devicename}_status
+
+text_sensor:
+  - platform: version
+    name: ${devicename}_esphome_version
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ESP8266 Temp Multi-Sensor</title>
       <link>https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/</link>
       <pubDate>Wed, 01 Jan 2020 12:43:54 +0000</pubDate>
       <guid>https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/</guid>
