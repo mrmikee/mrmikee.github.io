@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.mikecone.us/tags/kodi/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/post/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/post/home_projects/kodi_install_over_vnc/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/tags/raspberry-pi/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/tags/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/tags/vnc/</loc>
+    <lastmod>2020-05-02T22:55:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.mikecone.us/tags/3d-print/</loc>
     <lastmod>2020-01-01T12:43:54+00:00</lastmod>
   </url>
@@ -29,21 +64,6 @@
   
   <url>
     <loc>https://www.mikecone.us/categories/iot/</loc>
-    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/</loc>
-    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/post/</loc>
-    <lastmod>2020-01-01T12:43:54+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.mikecone.us/tags/</loc>
     <lastmod>2020-01-01T12:43:54+00:00</lastmod>
   </url>
   
