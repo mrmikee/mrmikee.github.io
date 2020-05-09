@@ -646,6 +646,7 @@
 <p>The cluster is comprised of 5 HP-T620plus thin clients.  Each has 4Gig RAM, 16Gig M.2 SSD storage, and a quad core processor @ 2Ghz.  So this is not a production environment to say the least, but it should allow me to experiment with the API&rsquo;s and learn k8s without having to pay monthly for something I really don&rsquo;t need everyday.  Plus, I get the satisfaction and &ldquo;geek cred&rdquo; for running it on bare metal at home.</p>
 <p>Each node is running Ubuntu 18.04 server that was installed from the Ubuntu &ldquo;mini.iso&rdquo; that I flashed to a usb thumb drive.</p>
 <p>I configured each node&rsquo;s network interface as DHCP, but gave them Static IP Leases on my pFsense router.</p>
+<p><img src="img/k8s-cluster-nas.jpg" alt="t620 cluster"></p>
 <hr>
 <h2 id="install-notes">Install notes:</h2>
 <h5 id="clone-the-kubespray-project">Clone the KubeSpray project</h5>
@@ -817,7 +818,7 @@ ssh -L 6443:10.20.30.3:6443 192.168.9.107 -N
 # - - https://10.20.30.3:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
 
 </code></pre>
-<p><img src="img/k8s-cluster-nas.jpg" alt="t620 cluster"></p>
+<p><img src="img/k8s_dashboard_conenet.png" alt="cluster dashboard"></p>
 
     </div>
 
