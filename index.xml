@@ -279,6 +279,193 @@ text_sensor:
     </item>
     
     <item>
+      <title>ConeNet Kubernetes</title>
+      <link>https://www.mikecone.us/post/home_projects/t620_kubernetes-cluster/</link>
+      <pubDate>Fri, 19 Jul 2019 00:12:00 +0000</pubDate>
+      <guid>https://www.mikecone.us/post/home_projects/t620_kubernetes-cluster/</guid>
+      <description>&lt;h2 id=&#34;my-k8s-setup&#34;&gt;My K8s setup&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;img/k8s-conenet-diagram.png&#34; alt=&#34;network diagram&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m using a Linux virtual machine for executing the Ansible plays.&lt;/p&gt;
+&lt;p&gt;From a previous project where some friends and I were experimenting with pFsense routers at home, I had purchased a few HP-T620plus thin clients so I have chosen to use those for this project.&lt;/p&gt;
+&lt;p&gt;The cluster is comprised of 5 HP-T620plus thin clients.  Each has 4Gig RAM, 16Gig M.2 SSD storage, and a quad core processor @ 2Ghz.  So this is not a production environment to say the least, but it should allow me to experiment with the API&amp;rsquo;s and learn k8s without having to pay monthly for something I really don&amp;rsquo;t need everyday.  Plus, I get the satisfaction and &amp;ldquo;geek cred&amp;rdquo; for running it on bare metal at home.&lt;/p&gt;
+&lt;p&gt;Each node is running Ubuntu 18.04 server that was installed from the Ubuntu &amp;ldquo;mini.iso&amp;rdquo; that I flashed to a usb thumb drive.&lt;/p&gt;
+&lt;p&gt;I configured each node&amp;rsquo;s network interface as DHCP, but gave them Static IP Leases on my pFsense router.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;install-notes&#34;&gt;Install notes:&lt;/h2&gt;
+&lt;h5 id=&#34;clone-the-kubespray-project&#34;&gt;Clone the KubeSpray project&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# make a directory to hold the project and &#39;cd&#39; into it.
+mkdir ansible_projects
+cd ansible_projects
+# clone the github repo
+git clone https://github.com/kubernetes-sigs/kubespray.git ./kubespray
+cd kubespray
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;configure-laptop-python-virtual-environment&#34;&gt;Configure laptop Python Virtual Environment&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;python3 -m venv env
+source env/bin/activate  # to activate the new virtual env.
+pip install --upgrade pip
+pip install -r requirements.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you are not familiar with virtual environments 
+&lt;a href=&#34;https://docs.python.org/3/tutorial/venv.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;check this out.&lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&#34;copy-ssh-key-to-all-k8s-nodes&#34;&gt;Copy SSH key to all k8s nodes&lt;/h5&gt;
+&lt;p&gt;The &amp;ldquo;user&amp;rdquo; needs SUDO rights on each k8s node.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# from the laptop console
+ssh-copy-id user@node01
+ssh user@node01
+sudo su  # to confirm sudo rights are configured.
+
+# repeat for all nodes, as necessary
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;enable-ip4-forwarding&#34;&gt;Enable IP4 forwarding&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; If you are familiar with Ansible Ad-Hoc commands and you have your inventory file configured already, you could do this using&lt;br&gt;
+&amp;ldquo;&lt;code&gt;ansible all -m shell -a &#39;sysctl -w net.ipv4.ip_forward=1&#39; --ask-become --become&lt;/code&gt;&amp;rdquo;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# check if IP_Forward is already enabled.  
+# &#39;0&#39; is off, &#39;1&#39; is on.
+cat /proc/sys/net/ipv4/ip_forward
+
+# temp enable ip_forward
+sysctl -w net.ipv4.ip_forward=1  # turn on temp
+
+# ---------
+# permanent enable
+# ---------
+# edit /etc/sysctl.conf
+# add line &amp;quot;net.ipv4.ip_forward=1&amp;quot;
+sysctl -p  # to enable after file save.
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;ansible-config&#34;&gt;Ansible Config&lt;/h5&gt;
+&lt;p&gt;Modified the example given by KubeSpray in the &amp;ldquo;inventory/sample&amp;rdquo; folder.&lt;/p&gt;
+&lt;p&gt;inventory.ini file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;# ## Configure &#39;ip&#39; variable to bind kubernetes services on a
+# ## different ip than the default iface
+# ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
+[all]
+hp-dock02 ansible_host=10.20.30.2 etcd_member_name=etcd2
+hp-dock03 ansible_host=10.20.30.3 etcd_member_name=etcd3
+hp-dock04 ansible_host=10.20.30.4 etcd_member_name=etcd4
+hp-dock05 ansible_host=10.20.30.5 etcd_member_name=etcd5
+hp-dock06 ansible_host=10.20.30.6 etcd_member_name=etcd6
+
+# ## configure a bastion host if your nodes are not directly reachable
+# bastion ansible_host=x.x.x.x ansible_user=some_user
+
+[kube-master]
+hp-dock02
+hp-dock03
+
+[etcd]
+hp-dock02
+hp-dock03
+hp-dock04
+
+[kube-node]
+hp-dock03
+hp-dock04
+hp-dock05
+hp-dock06
+
+[k8s-cluster:children]
+kube-master
+kube-node
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;run-the-playbook&#34;&gt;Run the playbook&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;ansible-playbook -i ./inventory.ini cluster.yml -b -v -K
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; Be prepared to wait a while for this to complete!&lt;/p&gt;
+&lt;h6 id=&#34;verify-cluster-is-up&#34;&gt;Verify cluster is up&lt;/h6&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# log into one of the MASTER nodes
+ssh user@master-node
+# become ROOT
+sudo su
+# get cluster status
+kubectl get nodes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# ---EXAMPLE---
+root@hp-dock03:~# kubectl get nodes
+NAME        STATUS   ROLES    AGE   VERSION
+hp-dock02   Ready    master   35m   v1.15.0
+hp-dock03   Ready    master   33m   v1.15.0
+hp-dock04   Ready    &amp;lt;none&amp;gt;   32m   v1.15.0
+hp-dock05   Ready    &amp;lt;none&amp;gt;   32m   v1.15.0
+hp-dock06   Ready    &amp;lt;none&amp;gt;   32m   v1.15.0
+root@hp-dock03:~# 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;yes-it-worked&#34;&gt;YES! It worked.&lt;/h1&gt;
+&lt;p&gt;Other things we can try:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kubectl get pods --all-namespaces
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h6 id=&#34;now-to-install-the-k8s-web-dashboard&#34;&gt;Now to install the k8s Web Dashboard&lt;/h6&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# as ROOT on a MASTER node
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
+
+# then launch the proxy
+kubectl proxy --address 0.0.0.0 --accept-hosts &#39;.*&#39;
+
+# access the web ui from my laptop with
+# http://hp-dock03:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;error&#34;&gt;ERROR!&lt;/h2&gt;
+&lt;p&gt;But of course there is an authentication issue.  A missing ADMIN user that was not created on install for some reason.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h4 id=&#34;create-admin-acct&#34;&gt;create Admin acct&lt;/h4&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://earlruby.org/2018/12/setting-up-a-personal-production-quality-kubernetes-cluster-with-kubespray/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;HowTo&lt;/a&gt; scroll down to the section on setup Kube Daskboard.&lt;/p&gt;
+&lt;h5 id=&#34;create-a-file-called-dashboard-adminuseryaml&#34;&gt;Create a file called: dashboard-adminuser.yaml&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;apply-the-configuration-with-kubectl&#34;&gt;Apply the configuration with KubeCtl:&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;kubectl apply -f ~/Projects/k8s-cluster/dashboard-adminuser.yaml&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&#34;get-the-token-for-the-newly-created-user&#34;&gt;Get the Token for the newly created user:&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk &#39;{print $1}&#39;)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now just paste the token into the k8s Dashboard login screen under the &amp;ldquo;token&amp;rdquo; option.&lt;/p&gt;
+&lt;h2 id=&#34;done&#34;&gt;DONE!&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;At least I thought I was done.&lt;/p&gt;
+&lt;h4 id=&#34;work-vpn-issues&#34;&gt;Work VPN issues&lt;/h4&gt;
+&lt;p&gt;This should not apply to you.&lt;/p&gt;
+&lt;p&gt;As I have more than one private network on my LAN, when I activate my work VPN it only allows local traffic on one of my subnets.  So to be able to reach the k8s cluster in the other private IP space while the work VPN client is &amp;ldquo;active&amp;rdquo;, I have to use a &amp;ldquo;bastion host&amp;rdquo; on my laptop&amp;rsquo;s subnet that can also &amp;ldquo;talk&amp;rdquo; to the cluster&amp;rsquo;s network.&lt;/p&gt;
+&lt;h5 id=&#34;to-view-k8s-dashboard-while-connected-to-work-vpn-i-have-to&#34;&gt;To view k8s dashboard while connected to work VPN I have to:&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# create local tunnel using a bastion server
+ssh -L 6443:10.20.30.3:6443 192.168.9.107 -N
+
+# -------------
+# now I can open the k8s Dashboard on my laptop:
+#
+# when VPN is active.
+# - https://localhost:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+#
+# when VPN is NOT active:
+# - - https://10.20.30.3:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;img/k8s-cluster-nas.jpg&#34; alt=&#34;t620 cluster&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Cloud in a Box</title>
       <link>https://www.mikecone.us/post/home_projects/cloud-in-a-box/</link>
       <pubDate>Sun, 29 May 2016 00:12:59 +0000</pubDate>

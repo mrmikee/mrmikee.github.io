@@ -93,6 +93,21 @@
   </url>
   
   <url>
+    <loc>https://www.mikecone.us/tags/ansible/</loc>
+    <lastmod>2019-07-19T00:12:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/post/home_projects/t620_kubernetes-cluster/</loc>
+    <lastmod>2019-07-19T00:12:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.mikecone.us/tags/k8s/</loc>
+    <lastmod>2019-07-19T00:12:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.mikecone.us/post/home_projects/cloud-in-a-box/</loc>
     <lastmod>2016-05-29T00:12:59+00:00</lastmod>
   </url>
