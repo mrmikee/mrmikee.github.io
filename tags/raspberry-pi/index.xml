@@ -72,5 +72,41 @@ sudo crontab -e
 </description>
     </item>
     
+    <item>
+      <title>Cloud in a Box</title>
+      <link>https://www.mikecone.us/post/home_projects/cloud-in-a-box/</link>
+      <pubDate>Sun, 29 May 2016 00:12:59 +0000</pubDate>
+      <guid>https://www.mikecone.us/post/home_projects/cloud-in-a-box/</guid>
+      <description>&lt;p&gt;While researching Ansible and how to use it for a project at work, I watched 
+&lt;a href=&#34;https://www.youtube.com/watch?v=ZNB1at8mJWY&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;this video from Jeff Geerling&lt;/a&gt; and I had to build my own Raspberry Pi cluster.&lt;/p&gt;
+&lt;p&gt;Then I thought why not get the kids involved and make this one a family project instead.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Here&amp;rsquo;s my son helping assemble the cluster.  The poor guy had fallen on the playground at school and broken his arm.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib-son.JPG&#34; alt=&#34;My son helping&#34;&gt;&lt;/p&gt;
+&lt;p&gt;My kids with the assembled cluster before wiring.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib-kids.JPG&#34; alt=&#34;My kids with assembled cluster&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Using some perf board and my soldering iron I put together some multi-colored leds to control via Ansible playbooks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib-leds.JPG&#34; alt=&#34;front led assembly&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Leds installed.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib-leds-lit.JPG&#34; alt=&#34;leds lit&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib-back.JPG&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;No project should be without a case!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib-cover-open.JPG&#34; alt=&#34;Cover Open&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/cib.JPG&#34; alt=&#34;Finished case&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;key-features&#34;&gt;Key Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Stand Alone. Requires no internet connection once software is installed. Great for giving demos.&lt;/li&gt;
+&lt;li&gt;Single power supply for the entire cluster including networking.  Clutter is reduced.&lt;/li&gt;
+&lt;li&gt;WiFi Client for using in demos and talks. (TP-Link WR702N)&lt;/li&gt;
+&lt;li&gt;Easy to transport and store&lt;/li&gt;
+&lt;li&gt;Can connect to the Internet when needed via Ethernet cable or Wifi.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;components&#34;&gt;Components&lt;/h3&gt;
+&lt;p&gt;The items I used to build my cluster are mostly still available, here is the 
+&lt;a href=&#34;https://www.amazon.com/hz/wishlist/ls/36A73OSARPAGJ&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt; Amazon Wish List&lt;/a&gt; that I created when I was building mine.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; I did modify the power cables so that each USB power port powers 2 of the Raspberry Pi&amp;rsquo;s. (Y-cable)&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>
