@@ -5,7 +5,7 @@
     <link>https://www.mikecone.us/tags/esp8266/</link>
       <atom:link href="https://www.mikecone.us/tags/esp8266/index.xml" rel="self" type="application/rss+xml" />
     <description>esp8266</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 01 Jan 2020 12:43:54 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 29 Jan 2020 12:00:00 +0000</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
       <title>esp8266</title>
@@ -13,97 +13,9 @@
     </image>
     
     <item>
-      <title>ESP8266 Temp Multi-Sensor</title>
-      <link>https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/</link>
-      <pubDate>Wed, 01 Jan 2020 12:43:54 +0000</pubDate>
-      <guid>https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/</guid>
-      <description>&lt;p&gt;I built a WiFi sensor for my attic to monitor temperature, humidity, and pressure for less than $10 using&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;a href=&#34;https://www.amazon.com/gp/product/B076F53B6S&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wemos D1 Mini clone&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;a href=&#34;https://www.amazon.com/gp/product/B07KR24P6P&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;BME280 (I2C temp/humidity sensor)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;and with the home automation software 
-&lt;a href=&#34;https://www.home-assistant.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Home Assistant&lt;/a&gt; with the 
-&lt;a href=&#34;https://esphome.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;EspHome&lt;/a&gt; plugin.&lt;/p&gt;
-&lt;p&gt;Here is my attic sensor&amp;rsquo;s display in Home Assistant:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/HomeAssistant_sensor_display.png&#34; alt=&#34;HomeAssistant temp Display&#34;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;hardware&#34;&gt;Hardware&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;NOTICE:&lt;/strong&gt; The GND pin of the sensor is NOT connected to pin D8 which is why the second pin has been removed from the header assembly.  I used a wire to connect ground from accross the board.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/temp_humid_header_config.jpeg&#34; alt=&#34;esp8266 header config&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_front.jpeg&#34; alt=&#34;assembled front&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_back.jpeg&#34; alt=&#34;assembled back&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/temp_humid_battery.jpeg&#34; alt=&#34;battery option&#34;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;case&#34;&gt;Case&lt;/h2&gt;
-&lt;p&gt;As always I have to find another reason to justify the purchase of my 3D printer.  So I searched Thingiverse and found where &amp;ldquo;Spiritdude&amp;rdquo; had already created a 
-&lt;a href=&#34;https://www.thingiverse.com/thing:2847539&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nice case for the D1 Mini board&lt;/a&gt;, but the sensor location created problems for the left side mouting location, so I imported the STL file into SketchUp and moved the leg more to the top of the case.&lt;/p&gt;
-&lt;p&gt;Here is 
-&lt;a href=&#34;https://www.thingiverse.com/thing:4199681&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;my modified version&lt;/a&gt; of Spiritdude&amp;rsquo;s case if you want to print your own.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_case_open.jpeg&#34; alt=&#34;case open&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_case_closed.jpeg&#34; alt=&#34;case closed&#34;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;software&#34;&gt;Software&lt;/h2&gt;
-&lt;p&gt;Here is my &amp;ldquo;Home Assistant ESP-Home&amp;rdquo; yaml config file for the Multi-Sensor.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;esphome:
-  name: attic_multisensor_01
-  platform: ESP8266
-  board: d1_mini
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_pass
-
-captive_portal:
-
-# Enable logging
-logger:
-
-# Enable Home Assistant API
-api:
-
-# Enable Over The Air updates
-ota:
-
-# Create BME Sensor on I2C
-i2c:
-  sda: D6
-  scl: D7
-  # Scan I2C address to look for sensors
-  scan: True
-
-sensor:
-  - platform: bme280
-    # Default address 0x77
-    address: 0x76
-    temperature:
-      name: &amp;quot;Attic Temperature&amp;quot;
-      id: attic_bme280_temperature
-      filters:
-        - lambda: return x * (9.0/5.0) + 32.0;
-      unit_of_measurement: &amp;quot;°F&amp;quot;
-    pressure:
-      name: &amp;quot;Attic Pressure&amp;quot;
-      id: attic_bme280_pressure
-    humidity:
-      name: &amp;quot;Attic Humidity&amp;quot;
-      id: attic_bme280_humidity
-      filters:
-        - calibrate_linear:
-          # Map 0.0 (from sensor) to 0.0 (true value)
-          - 0.0 -&amp;gt; 0.0 
-          - 32.7 -&amp;gt; 55.7
-    update_interval: 15s
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
       <title>WiFi Aquarium Water Temp Sensor</title>
       <link>https://www.mikecone.us/post/home_projects/esp_aquarium_temp_sensor/</link>
-      <pubDate>Wed, 01 Jan 2020 12:43:54 +0000</pubDate>
+      <pubDate>Wed, 29 Jan 2020 12:00:00 +0000</pubDate>
       <guid>https://www.mikecone.us/post/home_projects/esp_aquarium_temp_sensor/</guid>
       <description>&lt;p&gt;I built a second WiFi sensor, this time for my aquarium to monitor the tank water temperature.&lt;/p&gt;
 &lt;p&gt;This like my 
@@ -196,6 +108,94 @@ text_sensor:
   - platform: version
     name: ${devicename}_esphome_version
 
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ESP8266 Temp Multi-Sensor</title>
+      <link>https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/</link>
+      <pubDate>Wed, 01 Jan 2020 12:43:54 +0000</pubDate>
+      <guid>https://www.mikecone.us/post/home_projects/esp_tmp_humid_sensor/</guid>
+      <description>&lt;p&gt;I built a WiFi sensor for my attic to monitor temperature, humidity, and pressure for less than $10 using&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.amazon.com/gp/product/B076F53B6S&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wemos D1 Mini clone&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.amazon.com/gp/product/B07KR24P6P&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;BME280 (I2C temp/humidity sensor)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;and with the home automation software 
+&lt;a href=&#34;https://www.home-assistant.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Home Assistant&lt;/a&gt; with the 
+&lt;a href=&#34;https://esphome.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;EspHome&lt;/a&gt; plugin.&lt;/p&gt;
+&lt;p&gt;Here is my attic sensor&amp;rsquo;s display in Home Assistant:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/HomeAssistant_sensor_display.png&#34; alt=&#34;HomeAssistant temp Display&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;hardware&#34;&gt;Hardware&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;NOTICE:&lt;/strong&gt; The GND pin of the sensor is NOT connected to pin D8 which is why the second pin has been removed from the header assembly.  I used a wire to connect ground from accross the board.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/temp_humid_header_config.jpeg&#34; alt=&#34;esp8266 header config&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_front.jpeg&#34; alt=&#34;assembled front&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_back.jpeg&#34; alt=&#34;assembled back&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/temp_humid_battery.jpeg&#34; alt=&#34;battery option&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;case&#34;&gt;Case&lt;/h2&gt;
+&lt;p&gt;As always I have to find another reason to justify the purchase of my 3D printer.  So I searched Thingiverse and found where &amp;ldquo;Spiritdude&amp;rdquo; had already created a 
+&lt;a href=&#34;https://www.thingiverse.com/thing:2847539&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;nice case for the D1 Mini board&lt;/a&gt;, but the sensor location created problems for the left side mouting location, so I imported the STL file into SketchUp and moved the leg more to the top of the case.&lt;/p&gt;
+&lt;p&gt;Here is 
+&lt;a href=&#34;https://www.thingiverse.com/thing:4199681&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;my modified version&lt;/a&gt; of Spiritdude&amp;rsquo;s case if you want to print your own.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_case_open.jpeg&#34; alt=&#34;case open&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/temp_humid_assembled_case_closed.jpeg&#34; alt=&#34;case closed&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;software&#34;&gt;Software&lt;/h2&gt;
+&lt;p&gt;Here is my &amp;ldquo;Home Assistant ESP-Home&amp;rdquo; yaml config file for the Multi-Sensor.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;esphome:
+  name: attic_multisensor_01
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Enable Over The Air updates
+ota:
+
+# Create BME Sensor on I2C
+i2c:
+  sda: D6
+  scl: D7
+  # Scan I2C address to look for sensors
+  scan: True
+
+sensor:
+  - platform: bme280
+    # Default address 0x77
+    address: 0x76
+    temperature:
+      name: &amp;quot;Attic Temperature&amp;quot;
+      id: attic_bme280_temperature
+      filters:
+        - lambda: return x * (9.0/5.0) + 32.0;
+      unit_of_measurement: &amp;quot;°F&amp;quot;
+    pressure:
+      name: &amp;quot;Attic Pressure&amp;quot;
+      id: attic_bme280_pressure
+    humidity:
+      name: &amp;quot;Attic Humidity&amp;quot;
+      id: attic_bme280_humidity
+      filters:
+        - calibrate_linear:
+          # Map 0.0 (from sensor) to 0.0 (true value)
+          - 0.0 -&amp;gt; 0.0 
+          - 32.7 -&amp;gt; 55.7
+    update_interval: 15s
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
