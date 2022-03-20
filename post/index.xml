@@ -5,12 +5,199 @@
     <link>https://www.mikecone.us/post/</link>
       <atom:link href="https://www.mikecone.us/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 02 May 2020 22:43:54 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 20 Mar 2022 17:01:47 +0000</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
       <title>Posts</title>
       <link>https://www.mikecone.us/post/</link>
     </image>
+    
+    <item>
+      <title>Pxe boot (BIOS &amp; UEFI)</title>
+      <link>https://www.mikecone.us/post/home_projects/pxe-boot-bios-and-uefi/</link>
+      <pubDate>Sun, 20 Mar 2022 17:01:47 +0000</pubDate>
+      <guid>https://www.mikecone.us/post/home_projects/pxe-boot-bios-and-uefi/</guid>
+      <description>&lt;p&gt;This post is not meant to be a complete HOWTO article on setting up a complete network boot environment, but more of a reminder for myself as to the things I had to do to get this working on my network.  If this winds up helping someone else then that is just the &amp;ldquo;icing on the cake&amp;rdquo; as they say.&lt;/p&gt;
+&lt;p&gt;I wanted to learn more about PXE booting before getting started with Ubuntu MASS.  I did this to have a better understanding of the underlying technologies.  My ultimate goal is to autoinstall Ubuntu Server on Bare Metal (HP-T620&amp;rsquo;s) for my home lab Kubernetes cluster Ansbile deployment.  I wanted a way to auto install everything from bare metal to the K8&amp;rsquo;s pods so I could &amp;ldquo;refresh&amp;rdquo; the cluster at anytime after I messed something up while learning clustered K8s.&lt;/p&gt;
+&lt;p&gt;I thought about using one of my many Raspberry Pi&amp;rsquo;s as my PXE boot server, but in the end I had already built a small HP EliteDesk running Ubuntu 20.04 to mirror the Ubuntu package repositories so that I could cut down on my internet data usage, so I used that machine instead.&lt;/p&gt;
+&lt;p&gt;On my network, the PXE boot functions are split between two machines.  The first is my router that runs Pfsense and the second is the apt-mirror machine I mentioned earlier.&lt;/p&gt;
+&lt;p&gt;Hosts and function:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;pfsense&lt;/strong&gt; : DHCP, DNS&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;apt-mirror&lt;/strong&gt;: TFTP, HTTP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;tftp-config&#34;&gt;TFTP config&lt;/h2&gt;
+&lt;h6 id=&#34;prep-the-system&#34;&gt;Prep the system&lt;/h6&gt;
+&lt;p&gt;&lt;code&gt;tftpd-hpa&lt;/code&gt; is the tftp service, &lt;code&gt;pxelinux&lt;/code&gt; is a bootloader member of the syslinux family, and is built for the PXE environment, the &lt;code&gt;syslinux-efi&lt;/code&gt; package contains libraries needed to support EFI clients.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# become root on your TFTP server
+sudo su 
+
+apt install syslinux-common syslinux-efi pxelinux tftpd-hpa 
+
+mkdir -p /tftpboot/{bios,efi32,efi64,boot,iso,pxelinux.cfg}
+cd /tftpboot
+
+ln -rs pxelinux.cfg bios  &amp;amp;&amp;amp; ln -rs pxelinux.cfg efi32  &amp;amp;&amp;amp; ln -rs pxelinux.cfg efi64
+ln -rs boot bios &amp;amp;&amp;amp; ln -rs boot efi32 &amp;amp;&amp;amp; ln -rs boot efi64
+
+
+# BIOS files
+cp /usr/lib/syslinux/modules/bios/{ldlinux,vesamenu,libcom32,libutil}.c32 /tftpboot/bios
+cp /usr/lib/PXELINUX/pxelinux.0  /tftpboot/bios
+
+# UEFI-32 files
+cp /usr/lib/syslinux/modules/efi32/ldlinux.e32  /tftpboot/efi32
+cp /usr/lib/syslinux/modules/efi32/{vesamenu,libcom32,libutil}.c32  /tftpboot/efi32
+cp /usr/lib/SYSLINUX.EFI/efi32/syslinux.efi  /tftpboot/efi32
+
+# UEFI-64 files
+cp /usr/lib/syslinux/modules/efi64/ldlinux.e64  /tftpboot/efi64
+cp /usr/lib/syslinux/modules/efi64/{vesamenu,libcom32,libutil}.c32  /tftpboot/efi64
+cp /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi  /tftpboot/efi64
+
+# confirm port 69 is ALLOWED on local firewall
+ufw status
+# if ufw (micro firewall) is active and  69 is not allowed then:
+# ufw allow 69
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# tree view of tftpboot folder contents:
+tftpboot
+├── bios
+│   ├── codewall.png
+│   ├── ldlinux.c32
+│   ├── libcom32.c32
+│   ├── libutil.c32
+│   ├── pxelinux.0
+│   ├── pxelinux.cfg -&amp;gt; ../pxelinux.cfg
+│   └── vesamenu.c32
+├── boot
+│   ├── ...
+├── efi32
+│   ├── codewall.png
+│   ├── ldlinux.e32
+│   ├── libcom32.c32
+│   ├── libutil.c32
+│   ├── pxelinux.cfg -&amp;gt; ../pxelinux.cfg
+│   ├── syslinux.efi
+│   └── vesamenu.c32
+├── efi64
+│   ├── codewall.png
+│   ├── grub.cfg
+│   ├── ldlinux.e64
+│   ├── libcom32.c32
+│   ├── libutil.c32
+│   ├── pxelinux.cfg -&amp;gt; ../pxelinux.cfg
+│   ├── syslinux.efi
+│   └── vesamenu.c32
+├── iso
+│   ├── ...
+└── pxelinux.cfg
+    └── default
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; I have set a menu background &amp;ldquo;codewall.png&amp;rdquo; that I modified 3 copies of.  Each image has been edited to show one of &amp;ldquo;BIOS, EFI-32, EFI-64&amp;rdquo; as part of the background, so that I know which boot dir was chosen by DHCP during the PXE boot process.  (Just because I wanted to know how each system booted.)&lt;/p&gt;
+&lt;h6 id=&#34;tftpd-config&#34;&gt;TFTPD config&lt;/h6&gt;
+&lt;p&gt;&lt;code&gt;sudo nano /etc/default/tftpd-hpa&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# FILE: /etc/default/tftpd-hpa
+TFTP_USERNAME=&amp;quot;tftp&amp;quot;
+TFTP_DIRECTORY=&amp;quot;/tftpboot&amp;quot;
+TFTP_ADDRESS=&amp;quot;0.0.0.0:69&amp;quot;
+TFTP_OPTIONS=&amp;quot;--secure&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;sudo systemctl restart tftpd-hpa&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;http-config&#34;&gt;HTTP config&lt;/h2&gt;
+&lt;h6 id=&#34;install-apache-http-server&#34;&gt;install Apache HTTP server&lt;/h6&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;sudo apt install apache2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h6 id=&#34;edit-the-config-file&#34;&gt;edit the config file&lt;/h6&gt;
+&lt;p&gt;&lt;code&gt;nano /etc/apache2/sites-available/000-default.conf&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# add this to the VirtualHost config:
+
+Alias &amp;quot;/tftp&amp;quot; &amp;quot;/tftpboot&amp;quot;
+&amp;lt;Directory &amp;quot;/tftpboot&amp;quot;&amp;gt;
+	Options +Indexes
+	Order allow,deny
+	Allow from all
+	Require all granted
+&amp;lt;/Directory&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;dhcp-server-config&#34;&gt;DHCP server config&lt;/h2&gt;
+&lt;p&gt;I use pfsense as the DHCP server for my network.&lt;/p&gt;
+&lt;h5 id=&#34;pfsense-tftp-config-example&#34;&gt;Pfsense TFTP config example:&lt;/h5&gt;
+&lt;p&gt;From the Pfsense admin dashboard click &lt;strong&gt;&amp;ldquo;Services&amp;rdquo;&lt;/strong&gt; then &lt;strong&gt;&amp;ldquo;DHCP Server&amp;rdquo;&lt;/strong&gt; to configure TFTP for the network you have.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/pfsense-pxe-boot-config.png&#34; alt=&#34;pfsense screenshot of pxe config&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;ubuntu-server-files&#34;&gt;Ubuntu Server files&lt;/h2&gt;
+&lt;h6 id=&#34;download-the-iso-image&#34;&gt;Download the ISO image&lt;/h6&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /tftpboot/iso
+
+# Download the Server ISO
+wget https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-live-server-amd64.iso
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;prepare-the-boot-files&#34;&gt;Prepare the boot files&lt;/h5&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /tftpboot
+# make a directory for ubuntu boot files (kernel,etc)
+mkdir boot/ubuntu2004
+
+# mount the downloaded ISO file to /mnt
+mount iso/ubuntu-20.04.3-live-server-amd64.iso /mnt
+# alternately: sudo mount -o loop -t iso9660 &amp;lt;source.iso&amp;gt; &amp;lt;mountpoint&amp;gt;
+
+# copy the boot files from ISO image to boot/ubuntu2004 
+sudo cp /mnt/casper/initrd  /tftpboot/boot/ubuntu2004
+sudo cp /mnt/casper/vmlinuz /tftpboot/boot/ubuntu2004
+
+# Unmount the image:
+sudo umount /mnt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h6 id=&#34;edit-pxelinux-config-file&#34;&gt;Edit pxelinux config file&lt;/h6&gt;
+&lt;p&gt;&lt;code&gt;nano /tftpboot/pxelinux.cfg/default&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# FILE: /tftpboot/pxelinux.cfg/default
+UI vesamenu.c32
+MENU TITLE  My Custom Net Boot Menu
+MENU RESOLUTION 640 480
+MENU BACKGROUND codewall.png
+
+    LABEL Ubuntu 20.04.3 Server Manual install
+        KERNEL boot/ubuntu2004/vmlinuz
+        INITRD boot/ubuntu2004/initrd
+        APPEND url=http://TFTP_SERVER_IP/tftp/iso/ubuntu-20.04.3-live-server-amd64.iso root=/dev/ram0 ramdisk_size=1500000 ip=dhcp cloud-config-url=/dev/null ---
+
+    LABEL Local
+        MENU LABEL Boot from local drive
+        LOCALBOOT 0xffff
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;done&#34;&gt;Done!&lt;/h2&gt;
+&lt;p&gt;Now go enjoy booting Ubuntu server over the network and not needing a USB drive.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Articles that inspired me to take on this project:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://linuxconfig.org/how-to-configure-a-raspberry-pi-as-a-pxe-boot-server&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Raspberry Pi as a PXE boot server&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://askubuntu.com/questions/1235723/automated-20-04-server-installation-using-pxe-and-live-server-image&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Ask Ubuntu ( pxe install)&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://linuxconfig.org/how-to-verify-the-integrity-of-a-linux-distribution-iso-image&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Use GPG to verify file integrity&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://c-nergy.be/blog/?p=15664&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Deploy Ubuntu 20.04 Server through PXE&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://wiki.syslinux.org/wiki/index.php?title=PXELINUX&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PXELINUX docs&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.golinuxcloud.com/pxe-boot-server-cloud-init-ubuntu-20-04/#Pre-requisite&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;yet another pxe cloud-init example for syntax checking&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Raspberri Pi Kodi remote install</title>
