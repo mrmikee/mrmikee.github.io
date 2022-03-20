@@ -5,7 +5,7 @@
     <link>https://www.mikecone.us/</link>
       <atom:link href="https://www.mikecone.us/index.xml" rel="self" type="application/rss+xml" />
     <description>Michael Cone</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 20 Mar 2022 17:01:47 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 25 Feb 2022 17:01:47 +0000</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
       <title>Michael Cone</title>
@@ -15,7 +15,7 @@
     <item>
       <title>Pxe boot (BIOS &amp; UEFI)</title>
       <link>https://www.mikecone.us/post/home_projects/pxe-boot-bios-and-uefi/</link>
-      <pubDate>Sun, 20 Mar 2022 17:01:47 +0000</pubDate>
+      <pubDate>Fri, 25 Feb 2022 17:01:47 +0000</pubDate>
       <guid>https://www.mikecone.us/post/home_projects/pxe-boot-bios-and-uefi/</guid>
       <description>&lt;p&gt;This post is not meant to be a complete HOWTO article on setting up a complete network boot environment, but more of a reminder for myself as to the things I had to do to get this working on my network.  If this winds up helping someone else then that is just the &amp;ldquo;icing on the cake&amp;rdquo; as they say.&lt;/p&gt;
 &lt;p&gt;I wanted to learn more about PXE booting before getting started with Ubuntu MASS.  I did this to have a better understanding of the underlying technologies.  My ultimate goal is to autoinstall Ubuntu Server on Bare Metal (HP-T620&amp;rsquo;s) for my home lab Kubernetes cluster Ansbile deployment.  I wanted a way to auto install everything from bare metal to the K8&amp;rsquo;s pods so I could &amp;ldquo;refresh&amp;rdquo; the cluster at anytime after I messed something up while learning clustered K8s.&lt;/p&gt;
@@ -169,7 +169,7 @@ MENU BACKGROUND codewall.png
 &lt;h2 id=&#34;done&#34;&gt;Done!&lt;/h2&gt;
 &lt;p&gt;Now go enjoy booting Ubuntu server over the network and not needing a USB drive.&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;Articles that inspired me to take on this project:&lt;/p&gt;
+&lt;p&gt;Articles that inspired me during this project:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;
