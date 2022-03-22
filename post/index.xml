@@ -5,12 +5,26 @@
     <link>https://www.mikecone.us/post/</link>
       <atom:link href="https://www.mikecone.us/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 25 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 22 Mar 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>img/map[gravatar:%!s(bool=true) shape:circle]</url>
       <title>Posts</title>
       <link>https://www.mikecone.us/post/</link>
     </image>
+    
+    <item>
+      <title>Nagios notify via MS-Teams</title>
+      <link>https://www.mikecone.us/post/devops/nagios_notify_msteams/</link>
+      <pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>https://www.mikecone.us/post/devops/nagios_notify_msteams/</guid>
+      <description>&lt;p&gt;I published a new project to GitHub today: 
+&lt;a href=&#34;https://github.com/mrmikee/nagios-notify-msteams&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Nagios MS-Teams notifications&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This project sends alerts about hosts and services via MS-Teams.&lt;/p&gt;
+&lt;img src=&#34;img/example-service-notice.png&#34; alt=&#34;screenshot of nagios alert&#34; width=&#34;400&#34;/&gt;
+&lt;p&gt;I&amp;rsquo;m using Python with Jinja2 templates to send Simple messages and 
+&lt;a href=&#34;https://docs.microsoft.com/en-us/adaptive-cards/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Microsoft&amp;rsquo;s &amp;ldquo;Adaptive Cards&amp;rdquo;&lt;/a&gt; to MS-Teams via an &amp;ldquo;Incoming Webhook&amp;rdquo;.  This is not a bot, just a simple way for me to send nagios alerts.  For outages the fewer the moving parts of your alerting system the better.  Never depend on just one method of alerting.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Pxe boot (BIOS &amp; UEFI)</title>
